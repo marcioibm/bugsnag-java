@@ -1,6 +1,7 @@
 package com.bugsnag.example.spring.web;
 
 import com.bugsnag.Bugsnag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,11 +10,14 @@ import java.util.Date;
 @Configuration
 public class Config {
 
+    @Autowired
+    private BugsnagRequestInterceptor bugsnagRequestInterceptor;
+
     // Define singleton bean "bugsnag" which can be injected into any Spring managed class with @Autowired.
     @Bean
     public Bugsnag bugsnag() {
         // Create a Bugsnag client
-        Bugsnag bugsnag = new Bugsnag("YOUR-API-KEY");
+        Bugsnag bugsnag = new Bugsnag("26f1cd7cbe1d994a1480cb79b6e8b591");
 
         // Set some diagnostic data which will not change during the
         // lifecycle of the application
@@ -32,6 +36,8 @@ public class Config {
             report.setUserEmail("user@example.com");
             report.setUserId("12345");
         });
+
+        bugsnag.addCallback(bugsnagRequestInterceptor);
 
         return bugsnag;
     }
