@@ -6,9 +6,9 @@ import com.bugsnag.serialization.Serializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -37,13 +37,13 @@ public class SyncHttpDelivery implements HttpDelivery {
 
     @Override
     public void deliver(Serializer serializer, Object object) {
-        HttpURLConnection connection = null;
+        HttpsURLConnection connection = null;
         try {
             URL url = new URL(endpoint);
             if (proxy != null) {
-                connection = (HttpURLConnection) url.openConnection(proxy);
+                connection = (HttpsURLConnection) url.openConnection(proxy);
             } else {
-                connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpsURLConnection) url.openConnection();
             }
 
             connection.setDoOutput(true);
